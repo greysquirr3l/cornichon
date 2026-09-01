@@ -1,0 +1,13 @@
+[package]
+name = "cornichon-shortcuts"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+publish = false
+
+[dependencies]
+ratatui = { workspace = true }
+crossterm = { workspace = true }
+anyhow = { workspace = true }
+cornichon = { workspace = true }

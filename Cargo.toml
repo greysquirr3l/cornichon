@@ -1,0 +1,24 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/cornichon",
+    "examples/cornichon-slash",
+    "examples/cornichon-choice",
+    "examples/cornichon-picker",
+    "examples/cornichon-shortcuts",
+    "examples/cornichon-spinner",
+    "tools/mdbook",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+rust-version = "1.96"
+
+[workspace.dependencies]
+ratatui = "0.30"
+crossterm = "0.29"
+thiserror = "2"
+anyhow = "1"
+cornichon = { path = "crates/cornichon" }

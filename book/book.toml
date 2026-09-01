@@ -1,0 +1,38 @@
+[book]
+title = "cornichon"
+authors = ["greysquirr3l — Team Chaos 🦝✨"]
+description = "Composable Rust TUI menu patterns & spinner styles themed after Claude Code, Codex, and Grok CLI captures."
+src = "src"
+
+[build]
+build-dir = "book"
+create-missing = true
+
+[output.html]
+default-theme = "dark"
+preferred-dark-theme = "dark"
+no-section-label = false
+mathjax-support = false
+
+[output.html.fold]
+enable = true
+level = 1
+
+[output.html.search]
+enable = true
+limit-results = 20
+boost-title = 2
+boost-hierarchy = 1
+boost-paragraph = 1
+use-boolean-and = true
+expand = true
+heading-split-level = 3
+
+[output.html.print]
+enable = false
+
+[preprocessor.links]
+renderers = ["html"]
+
+[preprocessor.index]
+renderers = ["html"]

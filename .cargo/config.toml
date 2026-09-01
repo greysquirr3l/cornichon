@@ -1,0 +1,51 @@
+# Project-local cargo configuration.
+#
+# The `l` alias runs clippy with the full project lintset from ~/Projects/nick.md
+# ("Rust Standards (all projects)"). Use it instead of plain `cargo clippy` so
+# the same lint configuration runs locally and in CI.
+#
+# Usage: cargo l -p <crate>
+#
+# Note: if you see stale or missing diagnostics from VS Code's language server,
+# trust the terminal — run `RUSTC_WRAPPER= SCCACHE_DISABLE=1 cargo l -p <crate>`
+# directly. See ~/Projects/nick.md for context.
+
+[alias]
+l = [
+    "clippy",
+    "--workspace",
+    "--all-targets",
+    "--",
+    "-W", "clippy::all",
+    "-W", "clippy::pedantic",
+    "-W", "clippy::nursery",
+    "-W", "clippy::cargo",
+    "-W", "clippy::perf",
+    "-A", "clippy::module_name_repetitions",
+    "-A", "clippy::must_use_candidate",
+    "-A", "clippy::missing_errors_doc",
+    "-A", "clippy::missing_panics_doc",
+    "-A", "clippy::struct_excessive_bools",
+    "-A", "clippy::multiple_crate_versions",
+    "-D", "clippy::unwrap_used",
+    "-D", "clippy::expect_used",
+    "-D", "clippy::panic",
+    "-D", "clippy::indexing_slicing",
+    "-D", "clippy::cast_ptr_alignment",
+    "-D", "clippy::suspicious",
+    "-D", "warnings",
+]
+
+# Build, serve, and test the mdbook source under `./book`. The wrapper
+# binary lives at `tools/mdbook/`; it shells out to the externally-
+# installed `mdbook` binary, so we don't pull it in as a Rust dep.
+#
+# Usage:
+#   cargo book build     — mdbook build book
+#   cargo book serve     — mdbook serve book  (http://localhost:3000)
+#   cargo book test      — cargo test --workspace --doc
+#   cargo book all       — build + test (CI entry point)
+#
+# First-time setup: `cargo install mdbook --locked`
+book = ["run", "--manifest-path", "tools/mdbook/Cargo.toml", "--quiet", "--"]
+

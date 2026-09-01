@@ -1,0 +1,17 @@
+[package]
+name = "mdbook"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+publish = false
+description = "Workspace wrapper around the externally-installed mdbook binary — provides build/serve/test subcommands without forcing mdbook as a Rust dep."
+
+[[bin]]
+name = "mdbook"
+path = "src/main.rs"
+
+[dependencies]
+# Intentionally none — this wrapper shells out to the mdbook binary
+# installed on the user's PATH (via `cargo install mdbook --locked`).
+# Adding it as a Rust dep would inflate compile times for marginal benefit.
