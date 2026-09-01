@@ -4,14 +4,13 @@ version.workspace = true
 edition.workspace = true
 license.workspace = true
 rust-version.workspace = true
-description = "A composable Rust library for terminal-U menu patterns — slash-command palettes, permission prompts, project pickers, keyboard-shortcut modals — themed after Claude Code, Codex, and Grok CLI captures."
-readme = "README.md"
-repository = "https://github.com/greysquirr3l/cornichon"
-documentation = "https://docs.rs/cornichon"
-homepage = "https://github.com/greysquirr3l/cornichon"
-authors = ["greysquirr3l <nick@example.invalid>"]
-keywords = ["tui", "ratatui", "menu", "palette", "cli"]
-categories = ["command-line-interface", "gui"]
+readme.workspace = true
+repository.workspace = true
+documentation.workspace = true
+homepage.workspace = true
+description.workspace = true
+keywords.workspace = true
+categories.workspace = true
 
 [dependencies]
 ratatui = { workspace = true }
