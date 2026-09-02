@@ -20,13 +20,17 @@ The first public release.
 
 ### Added
 
+Grouped by area; full history of these items is in the
+[Roadmap](./roadmap.md).
+
 - **Menus**
   - `SlashMenu` — filterable `/command` palette with type-to-filter
     semantics, arrow + wrap navigation, hotkey support, and the Claude
     default command list (`/agents`, `/clear`, `/compact`, `/init`,
     `/model`, `/review`).
-  - `SelectMenu` — basic single-select list with title, items, and
-    hotkey jumps.
+  - `SelectMenu` — single-select list with title, items, hotkey jumps,
+    and a `query` / `filtered` / `filtered_indices` substring filter
+    (hotkey priority over filter typing).
   - `PermissionPrompt` — Claude Code's "Do you want to proceed?"
     three-option chooser with pre-attached `1`/`2`/`3` hotkeys.
   - `ProjectPicker` — Grok's project-directory chooser with a
@@ -34,6 +38,13 @@ The first public release.
     callers can switch to free-text input.
   - `ShortcutsModal` — Grok's Ctrl+x keyboard-shortcuts modal:
     categorized, expandable, two-stage Esc dismissal.
+- **Interactivity**
+  - `MenuDispatch` trait + `MenuEvent` enum unifying keyboard and mouse
+    input; `dispatch(MenuEvent)` is the single entry point on every
+    menu.
+  - `show_scrollbar(&self) -> bool` and `show_scrollbar(self, on) -> Self`
+    on each menu so callers can toggle the visible scrollbar without
+    touching internal layout.
 - **Spinners**
   - 61 `SpinnerStyle` variants across dots (braille), line, geometry,
     toggle, bouncing, pulse, noise, emoji, and special — names
@@ -43,16 +54,43 @@ The first public release.
   - `Spinner` state machine with `tick_at(Duration)` for clock-driven
     animation and `advance(Duration)` for delta-driven animation.
   - `TryFrom<&str>` / `TryFrom<String>` for spinner name → variant lookup.
+  - `Spinner::with_frames(&[&str])` builder to override the default frame
+    sequence for any style.
+- **Forms**
+  - `TextInput`, `Checkbox`, and `RadioGroup` in
+    `cornichon::domain::forms`, each with a uniform `update()` /
+    `apply()` API and a shared `apply_event` helper that adapts
+    `MenuEvent` into per-widget key events. `Widget for &Type` impls in
+    `adapters::ratatui::forms`.
+- **Async** (opt-in, `--features async`)
+  - `cornichon::ports::async_support::drive_until_action` — drive a
+    menu's update loop from any async event source
+    (`crossterm::event::EventStream`, `tokio::sync::mpsc::Receiver`,
+    etc.) and resolve on the first non-`None` `MenuAction`.
+  - No runtime dependency added; the feature only re-exports helpers.
 - **Themes**
   - `CLAUDE`, `CODEX`, `GROK` consts from the brainless registry
     captures.
   - `Theme::default()` returns `CLAUDE`.
+  - `Theme::from_env(var_name)` / `from_env_or(var_name, default)` /
+    `lookup(name)` / `names()` / `all()` for runtime theme selection
+    from an env var (e.g. `CORNICHON_THEME=grok`).
 - **Other**
   - `cornichon::ports` — re-exports for `ratatui::Buffer`, `Rect`,
     `Style`, `Widget` and `crossterm::event::{KeyCode, KeyEvent,
 KeyModifiers}` so consumers don't need a direct ratatui/crossterm
     dependency for the common types.
   - `cornichon::prelude` — one-stop `use` for everything you'd usually need.
+- **Documentation**
+  - Widget cookbook at `book/src/contributing/cookbook.md` — authoring
+    a new menu end-to-end (domain item → state machine → `Widget for
+&Menu` → render tests).
+  - `book/src/contributing/stateful.md` — why cornichon deliberately
+    diverges from `ratatui::StatefulWidget` (menus own their state and
+    render via `frame.render_widget_ref(&menu, area)`).
+  - `cargo doc --no-deps --document-private-items` is clean — every
+    public item carries a `///` rustdoc block with at least one runnable
+    example, and `use_self` / import-path lints pass.
 - **Examples** (5 runnable bins)
   - `cornichon-slash` — slash-command palette demo
   - `cornichon-choice` — yes/no approval prompt

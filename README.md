@@ -85,8 +85,16 @@ cornichon re-exports the `ratatui` / `crossterm` types it touches (`KeyEvent`,
 separate `use ratatui::…` for the common cases — but if you'd rather name
 ratatui directly in your own code, both work.
 
-No feature flags today. Future additions (themed bundles, async runtime
-support) will land as opt-in features rather than default-on behavior.
+The `async` Cargo feature gates `cornichon::ports::async_support` (an
+async-friendly event-loop helper built on `crossterm::event::EventStream`
+and `tokio::sync::mpsc::Receiver`). Enable it with:
+
+```toml
+cornichon = { version = "0.1", features = ["async"] }
+```
+
+Additional opt-in features (themed bundles, etc.) will land the same way —
+never default-on.
 
 [`cornichon::ports`]: https://docs.rs/cornichon/latest/cornichon/ports/index.html
 
@@ -132,9 +140,10 @@ Press <kbd>q</kbd> or <kbd>Esc</kbd> in any demo to quit.
    internal layout is the standard
    `src/{domain,ports,application,adapters}`.
 
-5. **No runtime dependencies beyond ratatui + crossterm.** No async runtime,
-   no `Instant::now()` inside the library, no background threads. Spinners
-   are deterministic — the caller's event loop drives the ticks.
+5. **No runtime dependencies beyond ratatui + crossterm.** No `Instant::now()`
+   inside the library, no background threads. Spinners are deterministic —
+   the caller's event loop drives the ticks. (The opt-in `async` feature
+   adds async event-stream helpers; see [Install](#install).)
 
 ---
 
