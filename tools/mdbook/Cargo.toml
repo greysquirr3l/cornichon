@@ -7,6 +7,9 @@ rust-version.workspace = true
 publish = false
 description = "Workspace wrapper around the externally-installed mdbook binary — provides build/serve/test subcommands without forcing mdbook as a Rust dep."
 
+[lints]
+workspace = true
+
 [[bin]]
 name = "mdbook"
 path = "src/main.rs"
