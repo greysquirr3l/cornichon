@@ -17,15 +17,18 @@ permissions:
   pages: write
   id-token: write
 
-# Avoid overlapping actions on the environment repo.
-environment:
-  name: github-pages
-  url: ${{ steps.deployment.outputs.page_url }}
-
+# Avoid overlapping actions on the environment repo. `environment` is a
+# job-level key — GitHub's workflow parser rejects it at the top level
+# ("Unexpected value 'environment'"), and the job is never created when
+# it is misplaced. The `steps` context is likewise only available inside
+# a job, so `environment.url` can only reference step outputs there.
 jobs:
   deploy:
     name: mdbook → GitHub Pages
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
 
@@ -41,11 +44,13 @@ jobs:
 
       - name: Install mdbook
         run: |
-          # Pinned to a stable mdbook version. Update both the URL and the
-          # hash together if upgrading.
-          curl -sSL \
-            https://github.com/rust-lang/mdBook/releases/download/v0.4.40/mdbook-v0.4.40-x86_64-unknown-linux-gnu.tar.gz \
-            | sudo tar xz -C /usr/local/bin
+          # Pinned to a stable mdbook version. Update the URL and the
+          # sha256 together if upgrading.
+          curl -sSL -o mdbook.tar.gz \
+            https://github.com/rust-lang/mdBook/releases/download/v0.5.4/mdbook-v0.5.4-x86_64-unknown-linux-gnu.tar.gz
+          echo "3f28de05dafca9d0f2eab99c662116b0e37b89b1d96a08f8f430b9eeae958cd7  mdbook.tar.gz" \
+            | sha256sum --check --strict
+          sudo tar xzf mdbook.tar.gz -C /usr/local/bin mdbook
 
       - name: Build the book
         # `mdbook build book` writes to `book/book` per `book.toml`.

@@ -18,7 +18,6 @@ rust-version = "1.96"
 readme = "README.md"
 repository = "https://github.com/greysquirr3l/cornichon"
 documentation = "https://docs.rs/cornichon"
-homepage = "https://github.com/greysquirr3l/cornichon"
 description = "A composable Rust library for terminal-UI menu patterns — slash-command palettes, permission prompts, project pickers, keyboard-shortcut modals — themed after Claude Code, Codex, and Grok CLI captures."
 keywords = ["tui", "ratatui", "menu", "palette", "cli"]
 categories = ["command-line-interface", "gui"]
@@ -29,3 +28,37 @@ crossterm = "0.29"
 thiserror = "2"
 anyhow = "1"
 cornichon = { path = "crates/cornichon" }
+
+# The strict lint profile from ~/Projects/nick.md ("Rust Standards (all
+# projects)"). It lives here rather than in a `cargo clippy -- <flags>`
+# alias so that every invocation shape works: `cargo l`, `cargo l -p
+# cornichon`, and `cargo l --workspace --all-targets`. A `--`-separated
+# alias would swallow any trailing argument into the rustc flag list
+# (cargo appends user args *after* the alias body), breaking every form
+# except the bare one.
+#
+# Members opt in with `[lints] workspace = true`.
+#
+# Lint groups sit at priority -1 so that the per-lint entries below
+# (priority 0) win over them, matching the flag order the old alias used.
+[workspace.lints.rust]
+warnings = "deny"
+
+[workspace.lints.clippy]
+all = { level = "warn", priority = -1 }
+pedantic = { level = "warn", priority = -1 }
+nursery = { level = "warn", priority = -1 }
+cargo = { level = "warn", priority = -1 }
+perf = { level = "warn", priority = -1 }
+suspicious = { level = "deny", priority = -1 }
+module_name_repetitions = "allow"
+must_use_candidate = "allow"
+missing_errors_doc = "allow"
+missing_panics_doc = "allow"
+struct_excessive_bools = "allow"
+multiple_crate_versions = "allow"
+unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"
+indexing_slicing = "deny"
+cast_ptr_alignment = "deny"

@@ -4,37 +4,23 @@
 # ("Rust Standards (all projects)"). Use it instead of plain `cargo clippy` so
 # the same lint configuration runs locally and in CI.
 #
-# Usage: cargo l -p <crate>
+# The lint levels themselves live in the root `Cargo.toml` under
+# `[workspace.lints]`, not in this alias. Cargo appends any user-supplied
+# arguments *after* the alias body, so an alias containing a `--` separator
+# would push trailing arguments (`-p cornichon`, `--workspace --all-targets`)
+# into the rustc flag list and fail with "Unrecognized option". Keeping the
+# alias flag-free lets every invocation shape work:
+#
+#   cargo l                              — lint the whole workspace
+#   cargo l -p cornichon                 — lint one crate
+#   cargo l --workspace --all-targets    — what CI runs
 #
 # Note: if you see stale or missing diagnostics from VS Code's language server,
 # trust the terminal — run `RUSTC_WRAPPER= SCCACHE_DISABLE=1 cargo l -p <crate>`
 # directly. See ~/Projects/nick.md for context.
 
 [alias]
-l = [
-    "clippy",
-    "--workspace",
-    "--all-targets",
-    "--",
-    "-W", "clippy::all",
-    "-W", "clippy::pedantic",
-    "-W", "clippy::nursery",
-    "-W", "clippy::cargo",
-    "-W", "clippy::perf",
-    "-A", "clippy::module_name_repetitions",
-    "-A", "clippy::must_use_candidate",
-    "-A", "clippy::missing_errors_doc",
-    "-A", "clippy::missing_panics_doc",
-    "-A", "clippy::struct_excessive_bools",
-    "-A", "clippy::multiple_crate_versions",
-    "-D", "clippy::unwrap_used",
-    "-D", "clippy::expect_used",
-    "-D", "clippy::panic",
-    "-D", "clippy::indexing_slicing",
-    "-D", "clippy::cast_ptr_alignment",
-    "-D", "clippy::suspicious",
-    "-D", "warnings",
-]
+l = ["clippy"]
 
 # Build, serve, and test the mdbook source under `./book`. The wrapper
 # binary lives at `tools/mdbook/`; it shells out to the externally-

@@ -348,7 +348,7 @@ mod tests {
     #[test]
     fn advance_saturates_at_u8_max() {
         let mut s = Spinner::builder().cadence(Cadence(1)).build();
-        let n = s.advance(Duration::from_secs(60)); // 60_000 / 1 = 60_000, way more than u8::MAX
+        let n = s.advance(Duration::from_mins(1)); // 60_000 / 1 = 60_000, way more than u8::MAX
         assert_eq!(n, u8::MAX);
     }
 

@@ -1,0 +1,32 @@
+# cargo-deny configuration — see https://github.com/EmbarkStudios/cargo-deny
+#
+# CI runs `cargo deny --all-features check`. Without this file cargo-deny
+# falls back to an empty licence allow-list and rejects every dependency in
+# the graph.
+
+[licenses]
+# Permissive licences accepted for dependencies.
+#
+# `MIT` and `Apache-2.0` cover the bulk of the graph. `Unicode-3.0` appears in
+# an `AND` expression (`unicode-ident` is `(MIT OR Apache-2.0) AND
+# Unicode-3.0`), so both halves have to be allowed. `Zlib` is required for
+# `foldhash`, which is licensed under `Zlib` alone.
+allow = [
+    "Apache-2.0",
+    "MIT",
+    "Unicode-3.0",
+    "Zlib",
+]
+
+# `terminfo` (WTFPL) is only reachable through ratatui's optional `termwiz`
+# backend, which cornichon does not enable. It is therefore absent from the
+# feature graph cargo-deny inspects, and needs no allowance here.
+
+[bans]
+# Transitive duplicates that cannot be collapsed without patching upstream.
+# Each entry resolves to two distinct major versions pulled in by different
+# dependencies.
+skip = [
+    "hashbrown",
+    "syn",
+]

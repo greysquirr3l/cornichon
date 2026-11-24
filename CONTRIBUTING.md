@@ -52,7 +52,9 @@ in the right place — that's the whole workflow.
 ## Lint profile
 
 The project enforces a strict clippy profile (see
-[`.cargo/config.toml`](.cargo/config.toml) — the `cargo l` alias). The
+[`Cargo.toml`](Cargo.toml) — the `[workspace.lints]` table, applied to each
+member via `[lints] workspace = true`; the `cargo l` alias in
+[`.cargo/config.toml`](.cargo/config.toml) is a plain `cargo clippy`). The
 denied lints are:
 
 | Lint                         | Why                                                     |

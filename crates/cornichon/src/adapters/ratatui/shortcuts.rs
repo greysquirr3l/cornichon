@@ -21,7 +21,11 @@ impl Widget for &ShortcutsModal {
             }
             let is_selected = i == selected;
             let is_expanded = expanded == Some(i);
-            let header_color = if is_selected { theme.fg } else { theme.fg_muted };
+            let header_color = if is_selected {
+                theme.fg
+            } else {
+                theme.fg_muted
+            };
 
             if is_expanded {
                 let header = Line::from(vec![
@@ -49,7 +53,10 @@ impl Widget for &ShortcutsModal {
                 let line = Line::from(vec![
                     Span::styled(prefix, Style::default().fg(header_color)),
                     Span::styled(group.label.clone(), Style::default().fg(header_color)),
-                    Span::styled(format!(" ({})", group.collapsed_count()), Style::default().fg(theme.fg_muted)),
+                    Span::styled(
+                        format!(" ({})", group.collapsed_count()),
+                        Style::default().fg(theme.fg_muted),
+                    ),
                 ]);
                 buf.set_line(area.x, y, &line, area.width);
                 y = y.saturating_add(1);
