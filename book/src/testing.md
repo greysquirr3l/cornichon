@@ -188,18 +188,15 @@ ignore:
 
 ## Quick-reference: lint profile
 
-The strict profile is encoded in `.cargo/config.toml` (alias `cargo l`).
+The strict profile is encoded in the root `Cargo.toml`, under
+`[workspace.lints]`, and applied to every member via `[lints] workspace =
+true`. The `cargo l` alias (see `.cargo/config.toml`) is a plain `cargo
+clippy`, so the profile applies regardless of how you invoke it.
+
 For a single check, the equivalent is:
 
 ```bash
-RUSTC_WRAPPER= SCCACHE_DISABLE=1 cargo clippy -p cornichon --all-targets -- \
-  -W clippy::all -W clippy::pedantic -W clippy::nursery -W clippy::cargo -W clippy::perf \
-  -A clippy::module_name_repetitions -A clippy::must_use_candidate \
-  -A clippy::missing_errors_doc -A clippy::missing_panics_doc \
-  -A clippy::struct_excessive_bools -A clippy::multiple_crate_versions \
-  -D clippy::unwrap_used -D clippy::expect_used -D clippy::panic \
-  -D clippy::indexing_slicing -D clippy::cast_ptr_alignment \
-  -D clippy::suspicious -D warnings
+RUSTC_WRAPPER= SCCACHE_DISABLE=1 cargo clippy -p cornichon --all-targets
 ```
 
 If `cargo l` is green, your tests will merge.

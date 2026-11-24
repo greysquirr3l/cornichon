@@ -9,7 +9,32 @@ Versioning].
 
 ## [Unreleased]
 
-No changes yet.
+### Changed
+
+- **Dependencies** — updated the development dependency `criterion` from
+  `0.5` to `0.8` and refreshed `Cargo.lock`. Criterion 0.8 deprecates
+  `criterion::black_box` in favour of `std::hint::black_box`; the
+  benchmark harness now imports the latter.
+- **Lint profile** — the strict clippy profile moved from the `cargo l`
+  alias in `.cargo/config.toml` to the `[workspace.lints]` table in the
+  root `Cargo.toml`. Cargo appends user-supplied arguments *after* an
+  alias body, so the previous `--`-separated alias turned any trailing
+  argument (`-p cornichon`, `--workspace --all-targets`) into a rustc
+  flag. With the profile in the manifest, `cargo l`, `cargo l -p
+  cornichon`, and `cargo l --workspace --all-targets` all work.
+
+### Fixed
+
+- `Duration::from_secs(60)` in the spinner saturation test is now
+  `Duration::from_mins(1)`, satisfying `clippy::duration_suboptimal_units`
+  on Rust 1.96.0 (the toolchain CI pins).
+- The `cargo l` alias no longer fails with `error: Unrecognized option`
+  when given package-selection arguments.
+
+### Removed
+
+- The redundant `package.homepage` metadata field, which Cargo reports as
+  duplicating `package.repository`.
 
 ## [0.1.0] — 2026-08-31
 
