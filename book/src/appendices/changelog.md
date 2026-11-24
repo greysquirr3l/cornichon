@@ -30,6 +30,12 @@ Versioning].
   on Rust 1.96.0 (the toolchain CI pins).
 - The `cargo l` alias no longer fails with `error: Unrecognized option`
   when given package-selection arguments.
+- The `book` workflow's `environment` key moved from the workflow level to
+  the `deploy` job. GitHub's workflow parser rejects a workflow-level
+  `environment` (`Unexpected value 'environment'`), so the job was never
+  created and every book run failed with zero jobs. The pinned mdbook is
+  also updated from 0.4.40 to 0.5.4, and the install step now verifies
+  the download's sha256 as its comment always claimed.
 
 ### Removed
 
