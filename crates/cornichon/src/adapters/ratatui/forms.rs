@@ -109,9 +109,7 @@ impl Widget for &RadioGroup {
             return;
         }
         for (i, label) in self.options.iter().enumerate() {
-            let y = area
-                .y
-                .saturating_add(u16::try_from(i).unwrap_or(u16::MAX));
+            let y = area.y.saturating_add(u16::try_from(i).unwrap_or(u16::MAX));
             if y >= area.y + area.height {
                 break;
             }
