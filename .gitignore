@@ -21,3 +21,4 @@ PROGRESS.md
 # book CI workflow on every push to main; never commit it.
 # See AGENTS.md.
 book/book/
+.mcp.json
